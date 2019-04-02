@@ -1,0 +1,37 @@
+
+adb shell monkey -p com.chinaway.android.truck.manager -s 500 --ignore-crashes --ignore-timeouts --monitor-native-crashes -v -v  20  > /Users/lifucai/monkey_log/monkey_log.txt
+
+adb shell monkey -p com.chinaway.android.truck.manager -s 500 --throttle 300 --ignore-crashes --ignore-timeouts --ignore-security-exceptions --ignore-native-crashes --monitor-native-crashes -v -v -v 100 > /Users/lifucai/monkey_log/monkey_log.txt
+
+adb pull /data/dontpanic  /Users/lifucai/monkey_log/dontpanic
+
+清除日志
+adb logcat -c 
+
+输出时间格式的运行日志到文件
+adb logcat -v time | grep -a AndroidRuntime > 123.txt
+
+输出特定apk包名，时间格式并且日志级别大于error的到文件
+adb logcat -v time *:E| grep com.chinaway.android.truck.manager > 555.log
+
+获取cpu信息
+adb -s 0216029b21df2403 shell dumpsys cpuinfo | grep com.chinaway.android.truck.manager
+获取mem信息
+adb -s 0216029b21df2403 shell dumpsys meminfo com.chinaway.android.truck.manager
+获取fms桢流量信息
+adb -s 0216029b21df2403 shell dumpsys gfxinfo com.chinaway.android.truck.manager
+获取net网络配置信息
+adb shell netcfg
+获取app进程id,app_pid
+adb -s 0216029b21df2403 shell ps | grep com.chinaway.android.truck.manager
+获取设备Uid
+adb -s 0216029b21df2403 shell cat /proc/28061(app_pid)/status
+上传流量
+adb -s 0216029b21df2403 shell  cat /proc/uid_stat/10394(Uid)/tcp_snd
+下载流量
+adb -s 0216029b21df2403 shell  cat /proc/uid_stat/uid/tcp_rcv
+User space（用户空间）和 Kernel space（内核空间）
+Kernel space 是 Linux 内核的运行空间，User space 是用户程序的运行空间
+获取cpu内核，几核
+adb -s 0216029b21df2403 shell cat /proc/cpuinfo
+

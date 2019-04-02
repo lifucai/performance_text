@@ -1,0 +1,90 @@
+python /Users/lifucai/AndroidPerformance/controller/test.py  我的车队 http://core.jenkins.chinawayltd.com/job/android_truck_manager/3259/artifact/app/build/outputs/apk/demoDev/release/truck_manager_V3.3.4_3259-demo-dev-release.apk  http://core.jenkins.chinawayltd.com/job/android_truck_manager/3260/artifact/app/build/outputs/apk/demoDev/release/truck_manager_V3.3.4_3260-demo-dev-release.apk
+
+
+2次apk不一样
+python /Users/lifucai/AndroidPerformance/controller/performance_test_start.py  我的车队 http://core.jenkins.chinawayltd.com/job/android_truck_manager/3259/artifact/app/build/outputs/apk/demoDev/release/truck_manager_V3.3.4_3259-demo-dev-release.apk  http://core.jenkins.chinawayltd.com/job/android_truck_manager/3260/artifact/app/build/outputs/apk/demoDev/release/truck_manager_V3.3.4_3260-demo-dev-release.apk
+
+2次apk一样
+python /Users/lifucai/AndroidPerformance/controller/performance_test_start.py  我的车队 http://core.jenkins.chinawayltd.com/job/android_truck_manager/3260/artifact/app/build/outputs/apk/demoDev/release/truck_manager_V3.3.4_3260-demo-dev-release.apk  http://core.jenkins.chinawayltd.com/job/android_truck_manager/3260/artifact/app/build/outputs/apk/demoDev/release/truck_manager_V3.3.4_3260-demo-dev-release.apk
+
+1. jenkins 入参
+   - module name, benchmark app url, test app url 
+
+定时器，老版本和新版本都调，还是掉一次？
+/Users/lifucai/AndroidPerformance/data_file/Logcat_Log_1551942060.log
+/Users/lifucai/AndroidPerformance/data_file/truck_manager_V3.3.4_3230-demo-dev-release_xxxx.log
+/Users/lifucai/AndroidPerformance/data_file/truck_manager_V3.3.4_3233-demo-dev-release_xxxx.log
+
+2. timer_init(self,file_name,interval, device, package)
+   file_name: apk_name(truck_manager_V3.3.4_3230-demo-dev-release) + 4 digital random number+‘.log’
+   timer_cancel(self), 不传参数
+
+3. data_process(app_info, benchmark_filename, test_filename, logcat_file_path)
+   benchmark_filename, test_filename, logcat_file_path都放在data_file
+   benchmark_filename (需要.log)truck_manager_V3.3.4_3230-demo-dev-release.log
+   test_filename      (需要.log)
+   app_info(.json)
+           app_info = {'apkname': test_result[0], 'apk_href': test_app_url, 'test_time': test_time, 'version': version, 'benchmark_apk_size': benchmark_result[1],'test_apk_size':test_result[1]}
+
+   {'apkname': apkname, 'apk_href': apk_href, 'test_time': test_time, 'version': version, 'apksize': apksize}
+4. data_process
+   - 计算最大/最小/平均值 ->{"benchmark":{cpu_max:111, cpu_min:lll, cup_avg:lll},{heap_max:111, heap_min:lll, heap_avg:lll},{mem_max:111, mem_min:lll, mem_avg:lll},{thread_max:111, thread_min:lll, thread_avg:lll}}
+   - 画图 -> 图片上传返回URL ( pic = {
+     "cpu": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1548915953607&di=e679634dfa6aff977e81812084476475&imgtype=0&src=http%3A%2F%2Fwww.51cto.com%2Ffiles%2Fuploadimg%2F20100401%2F172537735.jpg",
+     "mem": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1548915953607&di=e679634dfa6aff977e81812084476475&imgtype=0&src=http%3A%2F%2Fwww.51cto.com%2Ffiles%2Fuploadimg%2F20100401%2F172537735.jpg",
+     "thread": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1548915953607&di=e679634dfa6aff977e81812084476475&imgtype=0&src=http%3A%2F%2Fwww.51cto.com%2Ffiles%2Fuploadimg%2F20100401%2F172537735.jpg",
+     "fps": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1548915953607&di=e679634dfa6aff977e81812084476475&imgtype=0&src=http%3A%2F%2Fwww.51cto.com%2Ffiles%2Fuploadimg%2F20100401%2F172537735.jpg"，
+	 "icon": "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1548915953607&di=e679634dfa6aff977e81812084476475&imgtype=0&src=http%3A%2F%2Fwww.51cto.com%2Ffiles%2Fuploadimg%2F20100401%2F172537735.jpg"，
+ })
+   - log 日志解析 json
+   {"XXX":5,"YYY":6,"ZZZ":7}
+   - app icon每次上传
+   - 图片有效期改为30d
+
+rm -rf  /Users/lifucai/AndroidPerformance/apk/*
+truck_manager_V3.3.4_3230-demo-dev-release_5555
+   
+   
+   
+
+report:
+1. 应用信息, 应用大小:XX.YY MB(基线版本)/XX.YY MB(测试版本)
+2. "应用名称"改为"测试模块"
+3. 最后增加一个模块"错误日志解析"，样式参考monkey test
+
+
+http://core.jenkins.chinawayltd.com/job/android_truck_manager/3247/artifact/app/build/outputs/apk/demoDev/release/truck_manager_V3.3.4_3247-demo-dev-release.apk
+
+headers = {
+            'User-Agent': 'Mozilla/5.0 (Linux; U; Android 4.0.3; zh-cn; M032 Build/IML74K) '
+                          'AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30',
+            'Connection': 'keep-alive', }
+
+
+<html><head><meta http-equiv='refresh' content='1;url=/login?from=%2Fjob%2Fandroid_truck_manager%2F3247%2Fartifact%2Fapp%2Fbuild%2Foutputs%2Fapk%2FdemoDev%2Frelease%2Ftruck_manager_V3.3.4_3247-demo-dev-release.apk'/><script>window.location.replace('/login?from=%2Fjob%2Fandroid_truck_manager%2F3247%2Fartifact%2Fapp%2Fbuild%2Foutputs%2Fapk%2FdemoDev%2Frelease%2Ftruck_manager_V3.3.4_3247-demo-dev-release.apk');</script></head><body style='background-color:white; color:white;'>
+
+
+Authentication required
+<!--
+You are authenticated as: anonymous
+Groups that you are in:
+  
+Permission you need to have (but didn't): hudson.model.Hudson.Read
+ ... which is implied by: hudson.security.Permission.GenericRead
+ ... which is implied by: hudson.model.Hudson.Administer
+-->
+
+</body></html>          
+
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 404 Not Found</title>
+</head>
+<body><h2>HTTP ERROR 404</h2>
+<p>Problem accessing /job/android_truck_manager/3247/artifact/app/build/outputs/apk/demoDev/release/truck_manager_V3.3.4_3247-demo-dev-release.apk. Reason:
+<pre>    Not Found</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
